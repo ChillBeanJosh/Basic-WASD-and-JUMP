@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class playerWASD : MonoBehaviour
 {
-    public float MoveSpeed = 10f;
-    public float RotateSpeed = 75f;
+    public float moveSpeed = 10f;
+    public float rotateSpeed = 75f;
     private float _vInput;
     private float _hInput;
 
     private Rigidbody _rb;
-    public float JumpVelocity = 5f;
+    public float jumpVelocity = 5f;
     private bool _isJumping;
 
-    public float DistanceToGround = 0.1f;
-    public LayerMask GroundLayer;
+    public float distanceToGround = 0.1f;
+    public LayerMask groundLayer;
     private CapsuleCollider _col;
 
     
@@ -29,12 +29,12 @@ public class playerWASD : MonoBehaviour
     void Update()
     {
 
-        _vInput = Input.GetAxis("Vertical") * MoveSpeed;
-        _hInput = Input.GetAxis("Horizontal") * RotateSpeed;
+        _vInput = Input.GetAxis("Vertical") * moveSpeed;
+        _hInput = Input.GetAxis("Horizontal") * rotateSpeed;
 
         this.transform.Translate(Vector3.forward * _vInput * Time.deltaTime);
         this.transform.Rotate(Vector3.up * _hInput * Time.deltaTime);
-
+        //change rotate to translate and vector3.right for normal wasd
 
         _isJumping |= Input.GetKeyDown(KeyCode.Space);
     }
@@ -44,7 +44,7 @@ public class playerWASD : MonoBehaviour
 
         if (IsGrounded() && _isJumping)
         {
-            _rb.AddForce(Vector3.up * JumpVelocity, ForceMode.Impulse);
+            _rb.AddForce(Vector3.up * jumpVelocity, ForceMode.Impulse);
         }
 
         _isJumping = false;
@@ -57,7 +57,7 @@ public class playerWASD : MonoBehaviour
 
         Vector3 capsuleBottom = new Vector3(_col.bounds.center.x, _col.bounds.min.y, _col.bounds.center.z);
 
-        bool grounded = Physics.CheckCapsule(_col.bounds.center, capsuleBottom, DistanceToGround, GroundLayer, QueryTriggerInteraction.Ignore);
+        bool grounded = Physics.CheckCapsule(_col.bounds.center, capsuleBottom, distanceToGround, groundLayer, QueryTriggerInteraction.Ignore);
 
         return grounded;
     }
